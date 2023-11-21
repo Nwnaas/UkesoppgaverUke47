@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tempraaturer</title>
+</head>
+<body>
+
+<h1>Temperatur for Oslo</h1>
+
+<label for="month">Velg måned:</label>
+<select id="month">
+    <option value="january">January</option>
+    <option value="february">February</option>
+    <option value="march">March</option>
+    <option value="april">April</option>
+    <option value="may">May</option>
+    <option value="june">June</option>
+    <option value="july">July</option>
+    <option value="august">August</option>
+    <option value="september">September</option>
+    <option value="october">October</option>
+    <option value="november">November</option>
+    <option value="december">December</option>
+</select>
+
+<button onclick="getAverageTemperature()">Hent gjennomsnittstemperatur</button>
+
+<p id="result"></p>
+
+<script>
+    function getAverageTemperature() {
+        var selectedMonth = document.getElementById("month").value;
+
+        console.log("Selected Month:", selectedMonth);
+
+        // Send AJAX request to server
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:8080/getAverageTemperature?month=" + selectedMonth, true);
+
+        xhr.onreadystatechange = function () {
+            console.log("ReadyState:", xhr.readyState, "Status:", xhr.status);
+
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var result = xhr.responseText;
+                    console.log("Response:", result);
+                    document.getElementById("result").innerHTML = "Gjennomsnittstemperatur: " + result + " °C";
+                } else {
+                    console.error("Feil ved henting av gjennomsnittstemperatur. Status:", xhr.status);
+                }
+            }
+        };
+
+        xhr.send();
+    }
+
+</script>
+
+</body>
+</html>
